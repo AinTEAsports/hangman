@@ -129,7 +129,7 @@ class HangmanGame:
 
             print(self.__get_draw(self.__false_guess_count) + "\n\n\n")
             print(' '.join(self.__word.list_word_repr))
-            guess = input(f"\n\nFalse guesses: {' | '.join(self.__false_chars)}\nFalse guess count: {self.__false_guess_count}\nEnter your guess: ")
+            guess = input(f"\n\nFalse guesses: {' | '.join(self.__false_chars)}\nFalse guess count: {self.__false_guess_count}\nEnter your guess: ").lower()
 
             if len(guess) > 1:
                 continue
@@ -139,8 +139,7 @@ class HangmanGame:
             if not right_guess:
                 if not guess in self.__false_chars:
                     self.__false_chars.append(guess)
-
-                self.__false_guess_count += 1
+                    self.__false_guess_count += 1
 
             if ''.join(list(self.__word.word_repr.values())) == self.__word.word:
                 self.__finished_game = True
