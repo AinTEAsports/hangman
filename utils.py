@@ -1,5 +1,7 @@
 import os
 import sys
+import random
+import requests
 import subprocess
 from unidecode import unidecode
 
@@ -16,6 +18,18 @@ def clear_screen():
     else:
         subprocess.run(["clear"], check=False)
 
+
+def get_random_word() -> str:
+    """Returns a random word from wordlist hosted on Github
+
+    Returns:
+        (str): a random word from T25's Github wordlist
+    """
+
+    WORDLIST_URL = "https://raw.githubusercontent.com/Tom25/Hangman/master/wordlist.txt"
+    words = requests.get(WORDLIST_URL).text.split('\n')
+
+    return random.choice(words)
 
 
 SCRIPT_DIR = os.path.abspath(os.getcwd())

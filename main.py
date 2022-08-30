@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
 import sys
-from utils import HangmanGame
+from utils import HangmanGame, get_random_word
 
 
-game = HangmanGame("prout")
+word = get_random_word()
+game = HangmanGame(word)
 
 try:
     game.play()
