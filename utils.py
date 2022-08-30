@@ -8,6 +8,11 @@ from unidecode import unidecode
 import termcolor
 
 
+PATH_SEPARATOR = '\\' if sys.platform.startswith("win") else '/'
+SCRIPT_FULLPATH = PATH_SEPARATOR.join(os.path.realpath(__file__).split(PATH_SEPARATOR)[:-1])
+
+
+
 # This function is disgusting but I didn't found any better way to clear the screen
 def clear_screen():
     """Clears the screen
@@ -30,9 +35,6 @@ def get_random_word() -> str:
     words = requests.get(WORDLIST_URL).text.split('\n')
 
     return random.choice(words)
-
-
-SCRIPT_DIR = os.path.abspath(os.getcwd())
 
 
 class InvalidGuessNumber(Exception):
@@ -126,7 +128,7 @@ class HangmanGame:
         if guess_number > 10:
             raise InvalidGuessNumber("guess number only can be between 0 and 10")
 
-        file = f"{SCRIPT_DIR}/.hangman_representations/{guess_number}.hang"
+        file = f"{SCRIPT_FULLPATH}/.hangman_representations/{guess_number}.hang"
 
         with open(file, 'r', encoding="utf-8") as f:
             draw = f.read()
