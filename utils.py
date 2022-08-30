@@ -49,7 +49,7 @@ class HangmanWord:
         """
 
         self.__word = unidecode(word)
-        self.__word_repr = {char:'_' for char in word}
+        self.__word_repr = [[char, '_'] for char in word]
 
 
     @property
@@ -64,11 +64,11 @@ class HangmanWord:
 
 
     @property
-    def word_repr(self) -> dict[str:str]:
+    def word_repr(self) -> list[list[str, str]]:
         """The word repr
 
         Returns:
-            (dict[str:str]): Returns a dictionnary where each key is each char of the word
+            (list[list[str, str]]): Returns a dictionnary where each key is each char of the word
                 and if the char was found it is the char, otherwise it is '_'
         """
 
@@ -89,9 +89,9 @@ class HangmanWord:
         if not char in self.__word:
             return False
 
-        for c in self.__word_repr:
-            if c == char:
-                self.__word_repr[c] = char
+        for index, t in enumerate(self.__word_repr):
+            if t[0] == char:
+                self.__word_repr[index][1] = char
 
         return True
 
@@ -105,7 +105,7 @@ class HangmanWord:
                 it has been found, otherwise it is a '_'
         """
 
-        return [termcolor.colored(char, attrs=["underline"]) for char in self.__word_repr.values()]
+        return [termcolor.colored(char, attrs=["underline"]) for _, char in self.__word_repr]
 
 
 
@@ -141,8 +141,10 @@ class HangmanGame:
 
             clear_screen()
 
+
             print(self.__get_draw(self.__false_guess_count) + "\n\n\n")
             print(' '.join(self.__word.list_word_repr))
+
             guess = input(f"\n\nFalse guesses: {' | '.join(self.__false_chars)}\nFalse guess count: {self.__false_guess_count}\nEnter your guess: ").lower()
 
             if len(guess) > 1:
@@ -155,7 +157,8 @@ class HangmanGame:
                     self.__false_chars.append(guess)
                     self.__false_guess_count += 1
 
-            if ''.join(list(self.__word.word_repr.values())) == self.__word.word:
+            # TO CORRECT
+            if ''.join([char for _, char in self.__word.word_repr]) == self.__word.word:
                 self.__finished_game = True
 
             if self.__false_guess_count == 10:
@@ -176,5 +179,6 @@ class HangmanGame:
 
 
 if __name__ == "__main__":
-    pass
+    _ = HangmanWord("test")
+    print(' '.join(_.list_word_repr))
 
