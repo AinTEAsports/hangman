@@ -18,10 +18,7 @@ def clear_screen():
     """Clears the screen
     """
 
-    if sys.platform.startswith("win"):
-        subprocess.run(["cls"], check=False)
-    else:
-        subprocess.run(["clear"], check=False)
+    print("\033c", end="")
 
 
 def get_random_word() -> str:
