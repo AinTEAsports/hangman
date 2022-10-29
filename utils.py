@@ -12,24 +12,30 @@ PATH_SEPARATOR = '\\' if sys.platform.startswith("win") else '/'
 SCRIPT_FULLPATH = PATH_SEPARATOR.join(os.path.realpath(__file__).split(PATH_SEPARATOR)[:-1])
 
 
-
 # This function is disgusting but I didn't found any better way to clear the screen
-def clear_screen():
+def clear_screen() -> None:
     """Clears the screen
     """
 
     print("\033c", end="")
 
 
-def get_random_word() -> str:
+def get_random_word(filename: str = "") -> str:
     """Returns a random word from wordlist hosted on Github
 
     Returns:
         (str): a random word from T25's Github wordlist
     """
 
-    WORDLIST_URL = "https://raw.githubusercontent.com/Tom25/Hangman/master/wordlist.txt"
-    words = requests.get(WORDLIST_URL).text.split('\n')
+    if not filename:
+        WORDLIST_URL = "https://raw.githubusercontent.com/Tom25/Hangman/master/wordlist.txt"
+        words = requests.get(WORDLIST_URL).text.split('\n')
+    else:
+        if not os.path.exists(filename):
+            raise FileNotFoundError(f"cannot find '{filename}' file")
+        
+        with open(filename, 'r', encoding="utf-8", errors="ignore") as f:
+            words: list[str] = f.readlines()
 
     return random.choice(words)
 
